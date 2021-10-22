@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>TrabalhoIA_MVC.ClassLibrary</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Algoritmos\" />
+  </ItemGroup>
+
+</Project>
