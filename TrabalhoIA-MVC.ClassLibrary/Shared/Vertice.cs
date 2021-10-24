@@ -45,7 +45,7 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
             return false;
         }
 
-        public List<Arco> obterArcos()
+        public List<Arco> ObterArcos()
         {
             return this.arcos;
         }

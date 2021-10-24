@@ -1,4 +1,5 @@
-﻿using System;
+﻿using java.io;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -17,108 +18,95 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
 
         }
 
-        //alterar parametro para string?
-        public Grafo(File arquivo)
+        public Grafo(String caminhoArquivo)
         {
             try
             {
-                this.lerArquivo(arquivo);
+                this.LerArquivo(caminhoArquivo);
             }
-            catch (IOException e)
+            catch (Exception e)
             {
                 throw e;
             }
         }
 
-        public void adicionarVertice(String rotulo)
+        public void AdicionarVertice(String rotulo)
         {
             Vertice novo = new Vertice(rotulo);
             vertices.Add(novo);
         }
 
-        public List<Vertice> obterVertices()
+        public List<Vertice> ObterVertices()
         {
             return this.vertices;
         }
 
-        public Vertice pesquisaVertice(String rotulo)
+        public Vertice PesquisaVertice(String rotulo)
         {
             int indice = vertices.IndexOf(new Vertice(rotulo));
             return (indice >= 0) ? vertices[(indice)] : null;
         }
 
-        //alterar parametro para string?
-        public void gravarArquivo(File arquivo)
+        public void GravarArquivo(string caminhoArquivo)
         {
             try
             {
-                BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo));
+                BufferedWriter escritor = new BufferedWriter(new FileWriter(caminhoArquivo));
                 foreach (Vertice vertice in vertices)
                 {
                     escritor.write(vertice.obterLinhaArquivo() + "\n");
                 }
                 escritor.close();
             }
-            catch(IOException e)
+            catch(Exception e)
             {
                 throw e;
             }
             
         }
     
-        /**
-         * Esta funÃ§Ã£o lÃª um arquivo texto contendo o grafo representado em lista
-         * de adjacÃªncia. O arquivo deve conter uma linha para vÃ©rtice, tendo como a
-         * primeira informaÃ§Ã£o linha o nome do vÃ©rtice e, separados por tabulaÃ§Ã£o, 
-         * os nomes e pesos dos demais vÃ©rtices com os quais existem arcos. Ex.:
-         * A    B,2     C,4
-         * B    A,1.3
-         * C    B,2.5
-         * NÃ£o devem haver caracteres de espaÃ§o.
-         * Os pesos podem ser inteiros ou reais.
-         * @param arquivo Objeto da classe File para o arquivo a ser lido.
-         * @throws IOException 
-         */
-        public void lerArquivo(File arquivo) 
+        public void LerArquivo(string caminhoArquivo) 
         {
+            //ler arquivo com grafos
             try
             {
-                BufferedReader leitor = new BufferedReader(new FileReader(arquivo));
+
+                BufferedReader leitor = new BufferedReader(new FileReader(caminhoArquivo));
                 List<String[]> linhas = new List<String[]>();
                 String linhaAtual = leitor.readLine();
                 while (linhaAtual != null)
                 {
                     String[] valores = linhaAtual.Split("\t");
                     linhas.Add(valores);
-                    this.adicionarVertice(valores[0]);
+                    this.AdicionarVertice(valores[0]);
                     linhaAtual = leitor.readLine();
                 }
-
+                
                 foreach (String[] linha in linhas)
                 {
                     for (int i = 1; i < linha.Length; i++)
                     {
                         String[] termos = linha[i].Split(",");
-                        Vertice conecta = this.pesquisaVertice(termos[0]);
+                        Vertice conecta = this.PesquisaVertice(termos[0]);
                         double peso = Convert.ToDouble(termos[1]);
-                        this.pesquisaVertice(linha[0]).adicionarArco(conecta, peso);
+                        this.PesquisaVertice(linha[0]).adicionarArco(conecta, peso);
                         //System.out.println(linha[0] + " com " + termos[0] + " peso " + peso);
                     }
                 }
             }
-            catch (IOException e)
+            catch (Exception e)
             {
                 throw e;
             }
             
         }
     
-        public List<Arco> obterTodosOsArcos()
+        public List<Arco> ObterTodosOsArcos()
         {
             List<Arco> resultado = new List<Arco>();
             foreach (Vertice vertice in vertices) 
             {
-                foreach (Arco arco in vertice.obterArcos())
+                foreach (Arco arco in vertice.ObterArcos())
                     resultado.Add(arco);
             }
             return resultado;
