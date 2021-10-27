@@ -48,7 +48,7 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
 
         public String toString()
         {
-            return this.destino.toString() + "," + this.peso;
+            return this.destino.toString();// + ","+ this.peso;
         }
 
         public int compareTo(Arco t)

@@ -18,7 +18,7 @@ namespace TrabalhoIA_MVC.ClassLibrary.Algoritmos
             this.primeiroVertice = vertice;
         }
 
-        public List<Vertice> RealizarBusca(Vertice destino) {
+        public string RealizarBusca(Vertice destino) {
             List<Vertice> resultado = new List<Vertice>();
             List<Vertice> vertices = grafo.ObterVertices();
 
@@ -40,26 +40,36 @@ namespace TrabalhoIA_MVC.ClassLibrary.Algoritmos
 
                 foreach (Arco arco in vp.ObterArcos())
                 {
-                    vpAdjacentes.Add(arco.getDestino());
-                }
-
-                foreach (Vertice vf in vpAdjacentes)
-                {
-                    if (vf.obterVisitado() == 0)
+                    Vertice vpAdjacente = (arco.getDestino());
+                    if (vpAdjacente.obterVisitado() == 0)
                     {
-                        vf.visitar();
-                        vf.definirDistancia((vp.obterDistancia()) + (1));
-                        fila.Enqueue(vf);
+                        vpAdjacente.visitar();
+                        vpAdjacente.definirDistancia((vp.obterDistancia()) + (1));
+                        fila.Enqueue(vpAdjacente);
+
+                        List<Arco> caminhoLista = vpAdjacente.getCaminhoLista();
+                        caminhoLista.Add(arco);
+                        vpAdjacente.setCaminhoLista(caminhoLista);
                     }
                 }
 
                 vp.visitar();
                 if (vp.rotulo == destino.rotulo)
-                    break;
+                {
+                    string caminho = vp.rotulo + '-';
+                    Vertice verticecaminho = vp;
+                    while (verticecaminho.rotulo != this.primeiroVertice.rotulo) 
+                    {
+                        caminho += verticecaminho.getCaminhoLista()[0].getOrigem().toString() + '-';
+                        verticecaminho = verticecaminho.getCaminhoLista()[0].getOrigem();
+                    }
+
+                    return caminho.Remove(caminho.Length - 1);
+                }
             }
 
-            resultado = grafo.ObterVertices();
-            return resultado;
+            return null;
+
         }
     }
 }

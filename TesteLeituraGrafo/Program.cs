@@ -15,7 +15,7 @@ namespace TesteLeituraGrafo
             grafo.LerArquivo(path);
 
             AlgoritmoBuscaProfundidade algo = new AlgoritmoBuscaProfundidade(grafo, grafo.PesquisaVertice("A0"));
-            var resultado = algo.RealizarBusca(grafo.PesquisaVertice("A2"));
+            var resultado = algo.RealizarBusca(grafo.PesquisaVertice("B3"));
 
         }
     }

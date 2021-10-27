@@ -127,7 +127,14 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
 
         public List<Arco> getCaminhoLista()
         {
-            return new List<Arco>(this.caminhoLista);
+            if (this.caminhoLista == null)
+            {
+                return new List<Arco>();
+            }
+            else 
+            {
+                return this.caminhoLista;
+            }
         }
 
         public void setCaminhoLista(List<Arco> caminhoLista)
