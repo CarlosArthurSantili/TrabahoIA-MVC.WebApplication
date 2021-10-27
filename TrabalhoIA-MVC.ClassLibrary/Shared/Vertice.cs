@@ -8,9 +8,9 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
 {
     public class Vertice
     {
-        private List<Arco> arcos;// = new List();
+        private List<Arco> arcos = new List<Arco>();
 
-        private String rotulo;
+        public String rotulo;
     
         private int visitado = 0;
 

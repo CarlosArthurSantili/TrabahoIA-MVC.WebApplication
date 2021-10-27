@@ -18,7 +18,7 @@ namespace TrabalhoIA_MVC.ClassLibrary.Algoritmos
             this.primeiroVertice = vertice;
         }
 
-        public List<Vertice> RealizarBusca() {
+        public List<Vertice> RealizarBusca(Vertice destino) {
             List<Vertice> resultado = new List<Vertice>();
             List<Vertice> vertices = grafo.ObterVertices();
 
@@ -54,6 +54,8 @@ namespace TrabalhoIA_MVC.ClassLibrary.Algoritmos
                 }
 
                 vp.visitar();
+                if (vp.rotulo == destino.rotulo)
+                    break;
             }
 
             resultado = grafo.ObterVertices();

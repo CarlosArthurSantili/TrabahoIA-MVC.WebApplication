@@ -1,5 +1,4 @@
-﻿using java.io;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +10,7 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
 {
     public class Grafo
     {
-        private List<Vertice> vertices;// = new List();
+        private List<Vertice> vertices = new List<Vertice>();
 
         public Grafo()
         {
@@ -43,28 +42,14 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
 
         public Vertice PesquisaVertice(String rotulo)
         {
-            int indice = vertices.IndexOf(new Vertice(rotulo));
-            return (indice >= 0) ? vertices[(indice)] : null;
+            foreach (Vertice vertice in vertices)
+            {
+                if (vertice.rotulo == rotulo)
+                    return vertice;
+            }
+            return null;
         }
 
-        public void GravarArquivo(string caminhoArquivo)
-        {
-            try
-            {
-                BufferedWriter escritor = new BufferedWriter(new FileWriter(caminhoArquivo));
-                foreach (Vertice vertice in vertices)
-                {
-                    escritor.write(vertice.obterLinhaArquivo() + "\n");
-                }
-                escritor.close();
-            }
-            catch(Exception e)
-            {
-                throw e;
-            }
-            
-        }
-    
         public void LerArquivo(string caminhoArquivo) 
         {
             //ler arquivo com grafos
@@ -73,26 +58,28 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
                 /*
                  
                  */
-                BufferedReader leitor = new BufferedReader(new FileReader(caminhoArquivo));
+                var arquivo = File.ReadAllLines(caminhoArquivo);
                 List<String[]> linhas = new List<String[]>();
-                String linhaAtual = leitor.readLine();
-                while (linhaAtual != null)
+
+                foreach (string linha in arquivo)
                 {
-                    String[] valores = linhaAtual.Split("\t");
+                    String[] valores = linha.Split("\t");
                     linhas.Add(valores);
                     this.AdicionarVertice(valores[0]);
-                    linhaAtual = leitor.readLine();
                 }
-                
-                foreach (String[] linha in linhas)
+
+
+                foreach (string linha in arquivo)
                 {
-                    for (int i = 1; i < linha.Length; i++)
+                    String[] termos = linha.Split("\t");
+                    
+                    double peso = 1.0;
+                    String[] arcos = termos[1].Split(",");
+
+                    foreach (var arco in arcos)
                     {
-                        String[] termos = linha[i].Split(",");
-                        Vertice conecta = this.PesquisaVertice(termos[0]);
-                        double peso = Convert.ToDouble(termos[1]);
-                        this.PesquisaVertice(linha[0]).adicionarArco(conecta, peso);
-                        //System.out.println(linha[0] + " com " + termos[0] + " peso " + peso);
+                        Vertice conecta = this.PesquisaVertice(arco);
+                        this.PesquisaVertice(termos[0]).adicionarArco(conecta, peso);
                     }
                 }
             }
