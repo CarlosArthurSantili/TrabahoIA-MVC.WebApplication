@@ -70,7 +70,9 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
             //ler arquivo com grafos
             try
             {
-
+                /*
+                 
+                 */
                 BufferedReader leitor = new BufferedReader(new FileReader(caminhoArquivo));
                 List<String[]> linhas = new List<String[]>();
                 String linhaAtual = leitor.readLine();
