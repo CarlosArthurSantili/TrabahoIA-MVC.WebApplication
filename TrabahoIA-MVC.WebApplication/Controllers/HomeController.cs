@@ -28,6 +28,11 @@ namespace TrabahoIA_MVC.WebApplication.Controllers
             return View();
         }
 
+        public IActionResult Algoritmos() 
+        {
+            FrontModel front = new FrontModel();
+            return View(front);
+        }
         public IActionResult BuscaLargura()
         {
             return View();

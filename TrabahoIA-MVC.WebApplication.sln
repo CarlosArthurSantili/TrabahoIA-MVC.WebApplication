@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrabahoIA-MVC.WebApplicatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrabalhoIA-MVC.ClassLibrary", "TrabalhoIA-MVC.ClassLibrary\TrabalhoIA-MVC.ClassLibrary.csproj", "{4230D62D-C063-4D3D-9275-F8B23BB40148}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteLeituraGrafo", "TesteLeituraGrafo\TesteLeituraGrafo.csproj", "{67D81B56-30EA-4502-9650-A2A9AB064B51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TesteLeituraGrafo", "TesteLeituraGrafo\TesteLeituraGrafo.csproj", "{67D81B56-30EA-4502-9650-A2A9AB064B51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

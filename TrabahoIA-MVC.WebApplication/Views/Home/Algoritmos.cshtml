@@ -1,0 +1,66 @@
+﻿@*
+
+*@
+@using Microsoft.AspNetCore.Html
+@model FrontModel;
+@{
+
+}
+
+<h1>Algoritmos</h1>
+
+<div class="grid-container" style="width: auto">
+    @foreach (var id in Model.IdsList)
+    {
+        <div id="@id">@id</div>
+    }
+</div>
+
+<br>
+<br>
+
+<div>
+    <label>
+        Insira o valor: <input style="width: 350px" class="form-control" type="text" placeholder="Insira o local onde tu quer que o robô vá!" />
+    </label>
+</div>
+
+<br>
+<br>
+
+<div>
+    <div>
+        <label>Selecione um dos algoritmos:</label>
+    </div>
+    <button class="alert" onclick="WalkThrough()">Algoritmo 1</button>
+    <button class="alert">Algoritmo 2</button>
+    <button class="alert">Algoritmo 3</button>
+    <button class="alert">Algoritmo 4</button>
+    <button class="alert">Algoritmo 5</button>
+</div>
+
+<script>
+
+
+</script>
+
+
+
+
+<style>
+    .grid-container {
+        width: auto;
+        display: grid;
+        grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+        grid-gap: 5px;
+        background-color: #ababb8;
+        padding: 5px;
+    }
+
+        .grid-container > div {
+            background-color: #c5c5de;
+            text-align: center;
+            padding: 0px;
+            font-size: 25px;
+        }
+</style>
