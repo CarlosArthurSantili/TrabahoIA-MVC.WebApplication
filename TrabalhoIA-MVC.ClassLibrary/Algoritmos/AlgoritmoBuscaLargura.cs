@@ -7,51 +7,54 @@ using TrabalhoIA_MVC.ClassLibrary.Shared;
 
 namespace TrabalhoIA_MVC.ClassLibrary.Algoritmos
 {
-    public class AlgoritmoBuscaProfundidade
+    public class AlgoritmoBuscaLargura
     {
         Grafo grafo;
         Vertice primeiroVertice;
 
-        public AlgoritmoBuscaProfundidade(Grafo grafo, Vertice vertice)
+        public AlgoritmoBuscaLargura(Grafo grafo, Vertice vertice)
         {
             this.grafo = grafo;
             this.primeiroVertice = vertice;
         }
 
-        public string RealizarBusca(Vertice destino) {
+        public string RealizarBusca(Vertice destino)
+        {
             List<Vertice> resultado = new List<Vertice>();
-            Stack<Vertice> pilha = new Stack<Vertice>();
+            List<Vertice> vertices = grafo.ObterVertices();
 
-            foreach (Vertice qualquer in grafo.ObterVertices())
+            foreach (Vertice vertice in vertices)
             {
-                qualquer.zerarVisitas();
-                qualquer.zerarDistancia();
+                vertice.zerarVisitas();
+                vertice.zerarDistancia();
             }
 
             primeiroVertice.visitar();
             primeiroVertice.definirDistancia(0);
-            pilha.Push(primeiroVertice);
-            while (!(pilha.Count!=0))
-            {
-                Vertice vp = (Vertice)pilha.Pop();
+            Queue<Vertice> fila = new Queue<Vertice>();
+            fila.Enqueue(primeiroVertice);
 
+            while (fila.Count() != 0)
+            {
+                Vertice vp = (Vertice)fila.Dequeue();
                 List<Vertice> vpAdjacentes = new List<Vertice>();
+
                 foreach (Arco arco in vp.ObterArcos())
                 {
-                    vpAdjacentes.Add(arco.getDestino());
-                }
-
-                foreach (Vertice vf in vpAdjacentes)
-                {
-                    if (vf.obterVisitado() == 0)
+                    Vertice vpAdjacente = (arco.getDestino());
+                    if (vpAdjacente.obterVisitado() == 0)
                     {
-                        vf.visitar();
-                        vf.definirDistancia((vp.obterDistancia()) + (1));
-                        pilha.Push(vf);
+                        vpAdjacente.visitar();
+                        vpAdjacente.definirDistancia((vp.obterDistancia()) + (1));
+                        fila.Enqueue(vpAdjacente);
+
+                        List<Arco> caminhoLista = vpAdjacente.getCaminhoLista();
+                        caminhoLista.Add(arco);
+                        vpAdjacente.setCaminhoLista(caminhoLista);
                     }
                 }
-                vp.visitar();
 
+                vp.visitar();
                 if (vp.rotulo == destino.rotulo)
                 {
                     string caminho = vp.rotulo + '-';
@@ -67,6 +70,7 @@ namespace TrabalhoIA_MVC.ClassLibrary.Algoritmos
             }
 
             return null;
+
         }
     }
 }
