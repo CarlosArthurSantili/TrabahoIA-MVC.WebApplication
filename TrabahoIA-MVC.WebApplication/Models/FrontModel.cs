@@ -16,33 +16,21 @@ namespace TrabahoIA_MVC.WebApplication.Models
         public List<string> UnreachbleIds { get; set; }
         public List<string> RobotInitialIds { get; set; }
 
+
         public AlgoritmoBuscaProfundidade algoritmoBuscaProfundidade;
         public Grafo Grafo { get; set; }
-        public Vertice VerticeInicial { get; set; }
-        public Vertice VerticeFinal { get; set; }
+        //public string IdVerticeDestino { get; set; }
+
         public string[] Passos { get; set; }
-        public List<string> teste { get; set; }
+
+        public string[] PosicaoRobos { get; set; }
 
         public FrontModel()
         {
+            Grafo = new Grafo("Models\\grafo.tsv");
             idsData = new IdsData();
+            PosicaoRobos = new string[] {"A12", "B12", "C12", "D12", "E12"};
             PrepareIdsLists();
-        }
-
-        public void Teste()
-        {
-            teste.Add("A0");
-            teste.Add("A1");
-            teste.Add("A2");
-            teste.Add("A3");
-            teste.Add("A4");
-            teste.Add("A5");
-        }
-
-        public void ProcessarCaminho()
-        {
-            algoritmoBuscaProfundidade = new AlgoritmoBuscaProfundidade(Grafo, VerticeInicial);
-            Passos = algoritmoBuscaProfundidade.RealizarBusca(VerticeFinal).Split('-');
         }
 
         public void PrepareIdsLists() 
@@ -55,8 +43,34 @@ namespace TrabahoIA_MVC.WebApplication.Models
             UnreachbleIds = idsData.GetUnreachableIds();
             RobotInitialIds = new List<string>();
             RobotInitialIds = idsData.GetRobotInitialPlaces();
-            teste = new List<string>();
-            Teste();
+        }
+
+        public string[] AlgoritmoDeProfundidade(string IdVerticeDestino) 
+        {
+            List<string[]> rotasPossiveis = new List<string[]>();
+            foreach (var robo in PosicaoRobos)
+            {
+                Vertice vInicial = new Vertice(robo);
+                Vertice vFinal = new Vertice(IdVerticeDestino);
+                AlgoritmoBuscaProfundidade x1 = new AlgoritmoBuscaProfundidade(Grafo, vInicial);
+                string resultado = x1.RealizarBusca(vFinal);
+                rotasPossiveis.Add(resultado.Split("-"));
+            }
+            string[] caminho = GetRouteWithFewestSteps(rotasPossiveis);
+            return caminho;
+        }
+
+        public string[] GetRouteWithFewestSteps(List<string[]> rotasPossiveis) 
+        {
+            string[] menorRota = rotasPossiveis[0];
+            foreach (var rota in rotasPossiveis)
+            {
+                if (rota.Length < menorRota.Length)
+                {
+                    menorRota = rota;
+                }
+            }
+            return menorRota;
         }
     }
 }

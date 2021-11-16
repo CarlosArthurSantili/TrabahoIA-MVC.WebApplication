@@ -8,16 +8,32 @@
 
 <h1>Algoritmos</h1>
 
-<div class="grid-container" style="width: auto">
+<div class="grid-container">
     @foreach (var id in Model.IdsDictionary)
     {
         if (Model.ShelvesList.Contains(id.Key))
         {
-            <div class="bg-image hover-overlay" id="@id.Key">@id.Value</div>
+            <div id="@id.Key">@id.Value</div>
         }
-        else if (Model.RobotInitialIds.Contains(id.Key))
+        else if (id.Key == "A12")
         {
-            <div class="bg-image hover-overlay" id="@id.Key">R1</div>
+            <div style="background-color: green" id="@id.Key">R1</div>
+        }
+        else if (id.Key == "B12")
+        {
+            <div style="background-color: orchid" id="@id.Key">R2</div>
+        }
+        else if (id.Key == "C12")
+        {
+            <div style="background-color: orange" id="@id.Key">R3</div>
+        }
+        else if (id.Key == "D12")
+        {
+            <div style="background-color: yellow" id="@id.Key">R4</div>
+        }
+        else if (id.Key == "E12")
+        {
+            <div style="background-color: skyblue" id="@id.Key">R5</div>
         }
         else if (Model.UnreachbleIds.Contains(id.Key))
         {
@@ -25,11 +41,11 @@
         }
         else if (id.Key == "O11")
         {
-            <div class="bg-image hover-overlay" id="@id.Key">X</div>
+            <div id="@id.Key">X</div>
         }
         else
         {
-            <div class="bg-image hover-overlay" id="@id.Key">⠀⠀⠀⠀⠀⠀⠀⠀⠀</div>
+            <div id="@id.Key">⠀</div>
         }
     }
 </div>
@@ -39,7 +55,7 @@
 
 <div>
     <label>
-        Insira o valor: <input style="width: 350px" class="form-control" type="text" placeholder="Insira o local onde tu quer que o robô vá!" />
+        Insira o valor: <input id="input" style="width: 350px" class="form-control" type="text" placeholder="Insira o local onde tu quer que o robô vá!" />
     </label>
 </div>
 
@@ -50,34 +66,34 @@
     <div>
         <label>Selecione um dos algoritmos:</label>
     </div>
-    <button type="button" class="alert" onclick="WalkThrough();">Algoritmo 1</button>
+    <button type="button" class="alert" onclick="Profundidade();">Algoritmo 1</button>
     <button class="alert">Algoritmo 2</button>
     <button class="alert">Algoritmo 3</button>
     <button class="alert">Algoritmo 4</button>
     <button class="alert">Algoritmo 5</button>
-    <asp>
 </div>
 
 <script>
-
-    function sleep(milliseconds) {
-        const date = Date.now();
-        let currentDate = null;
-        do {
-            currentDate = Date.now();
-        } while (currentDate - date < milliseconds);
+    function Profundidade()
+    {
+        string idVerticeDestino = document.getElementById("input").value;
+        WalkThrough(@Model.AlgoritmoDeProfundidade(@@ idVerticeDestino));
     }
 
-    async function WalkThrough()
+    async function WalkThrough(caminho)
     {
-        var path = ["A0", "B0", "C0", "D0", "E0", "F0", "F1", "F2", "F3", "F4"];
-        count = 10;
+        count = caminho.count;
         for (var i = 0; i < count;i++)
         {
-            document.getElementById(path[i]).innerHTML = "X";
-            await sleep(1000);
-            document.getElementById(path[i]).innerHTML = "O";
-            await sleep(1000);
+            if (i == (count - 1)) {
+                document.getElementById(caminho[i]).style = "background-color: red";
+            }
+            else {
+                document.getElementById(caminho[i]).style = "background-color: red";
+                await sleep(600);
+                document.getElementById(caminho[i]).style = "background-color: #c5c5de";
+                await sleep(600);
+            }
         }
     }
 
@@ -90,12 +106,12 @@
 
 <style>
     .grid-container {
-        width: auto;
+        width: 75%;
         display: grid;
-        grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
-        grid-gap: 5px;
-        background-color: #ababb8;
-        padding: 5px;
+        grid-template-columns: 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6%;
+        grid-gap: 1%;
+        background-color: white;
+        padding: 3.5%;
     }
 
         .grid-container > div {
@@ -104,4 +120,5 @@
             padding: 0px;
             font-size: 25px;
         }
+
 </style>
