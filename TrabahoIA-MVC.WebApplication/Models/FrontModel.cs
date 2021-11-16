@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.JSInterop;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,10 +20,8 @@ namespace TrabahoIA_MVC.WebApplication.Models
 
         public AlgoritmoBuscaProfundidade algoritmoBuscaProfundidade;
         public Grafo Grafo { get; set; }
-        //public string IdVerticeDestino { get; set; }
 
         public string[] Passos { get; set; }
-
         public string[] PosicaoRobos { get; set; }
 
         public FrontModel()
@@ -45,6 +44,7 @@ namespace TrabahoIA_MVC.WebApplication.Models
             RobotInitialIds = idsData.GetRobotInitialPlaces();
         }
 
+        [JSInvokable]
         public string[] AlgoritmoDeProfundidade(string IdVerticeDestino) 
         {
             List<string[]> rotasPossiveis = new List<string[]>();
@@ -57,20 +57,59 @@ namespace TrabahoIA_MVC.WebApplication.Models
                 rotasPossiveis.Add(resultado.Split("-"));
             }
             string[] caminho = GetRouteWithFewestSteps(rotasPossiveis);
-            return caminho;
+            string[] entregaERetorno = GetCaminhoEntrega(caminho.Last());
+            string[] caminhoCompleto = CreateWholePath(caminho, entregaERetorno);
+            
+            return caminhoCompleto;
         }
 
         public string[] GetRouteWithFewestSteps(List<string[]> rotasPossiveis) 
         {
+            int count = -1;
             string[] menorRota = rotasPossiveis[0];
             foreach (var rota in rotasPossiveis)
             {
+                count++;
                 if (rota.Length < menorRota.Length)
                 {
                     menorRota = rota;
                 }
             }
+            UpdateRobotsPositions(menorRota, count);
             return menorRota;
+        }
+
+        private void UpdateRobotsPositions(string[] caminho, int robot)
+        {
+            string lastPosition = caminho.Last();
+            PosicaoRobos[robot] = lastPosition;
+        }
+
+        private string[] GetCaminhoEntrega(string robo)
+        {
+            Vertice vInicial = new Vertice(robo);
+            Vertice vFinal = new Vertice("O11");
+            AlgoritmoBuscaProfundidade x1 = new AlgoritmoBuscaProfundidade(Grafo, vInicial);
+            string resultado = x1.RealizarBusca(vFinal);
+            AlgoritmoBuscaProfundidade x2 = new AlgoritmoBuscaProfundidade(Grafo, vFinal);
+            string resultado2 = x2.RealizarBusca(vInicial);
+            
+            string[] caminhoEntrega = resultado.Split("-");
+            foreach (var item in resultado2.Split("-"))
+            {
+                caminhoEntrega.Append(item);
+            }
+            return caminhoEntrega;
+        }
+
+        private string[] CreateWholePath(string[] caminho, string[] entregaERetorno)
+        {
+            string[] caminhoCompleto = caminho;
+            foreach (var item in entregaERetorno)
+            {
+                caminhoCompleto.Append(item);
+            }
+            return caminhoCompleto;
         }
     }
 }

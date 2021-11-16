@@ -74,17 +74,18 @@
 </div>
 
 <script>
-    function Profundidade()
-    {
-        string idVerticeDestino = document.getElementById("input").value;
-        WalkThrough(@Model.AlgoritmoDeProfundidade(@@ idVerticeDestino));
+    function Profundidade() {
+         var idVerticeDestino = document.getElementById("input").value;
+        var caminho = (dotNetHelper, idVerticeDestino) => {
+            return dotNetHelper.invokeMethodAsync('AlgoritmoDeProfundidade', idVerticeDestino);
+        };
+        WalkThrough(caminho);
     }
 
-    async function WalkThrough(caminho)
-    {
+    async function WalkThrough(caminho) {
         count = caminho.count;
-        for (var i = 0; i < count;i++)
-        {
+        document.getElementById(caminho[0]).style = "background-color: #c5c5de";
+        for (var i = 0; i < count; i++) {
             if (i == (count - 1)) {
                 document.getElementById(caminho[i]).style = "background-color: red";
             }
@@ -104,21 +105,33 @@
     }
 </script>
 
-<style>
-    .grid-container {
-        width: 75%;
-        display: grid;
-        grid-template-columns: 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6%;
-        grid-gap: 1%;
-        background-color: white;
-        padding: 3.5%;
-    }
+@functions
+{
+    private string? name;
+    private string? result;
+    private DotNetObjectReference<CallDotNetExample3>? objRef;
 
-        .grid-container > div {
-            background-color: #c5c5de;
-            text-align: center;
-            padding: 0px;
-            font-size: 25px;
+    public async Task TriggerDotNetInstanceMethod()
+    {
+        objRef = DotNetObjectReference.Create(this);
+        result = await JS.InvokeAsync<string> ("sayHello2", objRef, name);
+    }
+}
+
+    <style>
+        .grid-container {
+            width: 75%;
+            display: grid;
+            grid-template-columns: 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6%;
+            grid-gap: 1%;
+            background-color: white;
+            padding: 3.5%;
         }
 
-</style>
+            .grid-container > div {
+                background-color: #c5c5de;
+                text-align: center;
+                padding: 0px;
+                font-size: 25px;
+            }
+    </style>
