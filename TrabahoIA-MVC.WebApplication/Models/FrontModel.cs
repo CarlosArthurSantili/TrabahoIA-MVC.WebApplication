@@ -11,22 +11,22 @@ namespace TrabahoIA_MVC.WebApplication.Models
     {
         private readonly IdsData idsData;
 
-        public List<string> IdsList { get; set; }
+        public Dictionary<string, string> IdsDictionary { get; set; }
+        public List<string> ShelvesList { get; set; }
+        public List<string> UnreachbleIds { get; set; }
+        public List<string> RobotInitialIds { get; set; }
+
         public AlgoritmoBuscaProfundidade algoritmoBuscaProfundidade;
-        public string[] Passos { get; set; }
         public Grafo Grafo { get; set; }
         public Vertice VerticeInicial { get; set; }
         public Vertice VerticeFinal { get; set; }
-
+        public string[] Passos { get; set; }
         public List<string> teste { get; set; }
 
         public FrontModel()
         {
             idsData = new IdsData();
-            IdsList = new List<string>();
-            teste = new List<string>();
-            IdsList = idsData.GetIdsList();
-            Teste();
+            PrepareIdsLists();
         }
 
         public void Teste()
@@ -45,26 +45,18 @@ namespace TrabahoIA_MVC.WebApplication.Models
             Passos = algoritmoBuscaProfundidade.RealizarBusca(VerticeFinal).Split('-');
         }
 
-        /*
-         @functions
-{
-    void WalkThrough()
-    {
-        string lastId = Model.teste[0];
-        foreach (var passo in Model.teste)
+        public void PrepareIdsLists() 
         {
-            if (Html.Raw($@"document.getElementById(@lastId)"))
-            {
-                document.getElementById(@lastId).innerHTML('@lastId');
-            }
-            if (Html.Raw($@"document.getElementById(@passo)"))
-            {
-                document.getElementById(@passo).innerHTML('X');
-                lastId = passo;
-            }
+            IdsDictionary = new Dictionary<string, string>();
+            IdsDictionary = idsData.GetIdsDictionary();
+            ShelvesList = new List<string>();
+            ShelvesList = idsData.GetShelvesIds();
+            UnreachbleIds = new List<string>();
+            UnreachbleIds = idsData.GetUnreachableIds();
+            RobotInitialIds = new List<string>();
+            RobotInitialIds = idsData.GetRobotInitialPlaces();
+            teste = new List<string>();
+            Teste();
         }
-    }
-}
-         */
     }
 }
