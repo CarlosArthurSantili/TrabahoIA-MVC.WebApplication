@@ -54,8 +54,12 @@
 <br>
 
 
+
+
 @using (Html.BeginForm("Algoritmos", "Home", FormMethod.Post))
 {
+    <button type="button" class="alert" onclick="WalkThrough()">Rodar animação</button>
+
     <div class="form-group">
         <label>
             Insira o valor:
@@ -77,24 +81,26 @@
     <br>
 
     <div>
-        <input type="submit" class="alert" value="Começar" />
+        <input type="submit" class="alert" value="Começar" onclick="WalkThrough()" />
     </div>
 
 }
-@Model.CaminhoCompleto
+
+@ViewBag.caminho2
 
 <script>
-    function Profundidade() {
-        var idVerticeDestino = document.getElementById("input").value;
-        var caminho = (dotNetHelper, idVerticeDestino) => {
-            return dotNetHelper.invokeMethodAsync('AlgoritmoDeProfundidade', idVerticeDestino);
-        };
-        WalkThrough(caminho);
-    }
+    
+    var stringcaminho = "@(ViewBag.caminho2)";
 
-    async function WalkThrough(caminho) {
-        count = caminho.count;
+    async function WalkThrough() {
+        console.log(stringcaminho);
+        var caminho = stringcaminho.split("-");
+        console.log(caminho);
+        var count = caminho.length;
+        console.log(count);
+        console.log(caminho.length);
         document.getElementById(caminho[0]).style = "background-color: #c5c5de";
+        console.log(caminho[0]);
         for (var i = 0; i < count; i++) {
             if (i == (count - 1)) {
                 document.getElementById(caminho[i]).style = "background-color: red";

@@ -39,13 +39,15 @@ namespace TrabahoIA_MVC.WebApplication.Controllers
         [HttpPost]
         public IActionResult Algoritmos(FrontModel atualizaFront)
         {
-            if(atualizaFront.AlgoritmoEscolhido == "Algoritmo1")
+            if(atualizaFront.AlgoritmoEscolhido == "Algoritmo2")
             {
                 //this.Front = new FrontModel();
-                Front.AlgoritmoDeLargura(atualizaFront.VerticeDestino);
+                ViewBag.caminho = Front.AlgoritmoDeLargura(atualizaFront.VerticeDestino);
+                ViewBag.caminho2 = Front.CaminhoToString(atualizaFront.VerticeDestino);
             }          
             return View(Front);
         }
+
         public IActionResult BuscaLargura()
         {
             return View();

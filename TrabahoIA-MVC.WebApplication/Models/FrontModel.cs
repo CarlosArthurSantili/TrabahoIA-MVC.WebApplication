@@ -49,7 +49,7 @@ namespace TrabahoIA_MVC.WebApplication.Models
         }
 
         
-        public void AlgoritmoDeLargura(String VerticeDestino) 
+        public string[] AlgoritmoDeLargura(String VerticeDestino) 
         {
             List<string[]> rotasPossiveis = new List<string[]>();
             foreach (var robo in PosicaoRobos)
@@ -74,7 +74,7 @@ namespace TrabahoIA_MVC.WebApplication.Models
             string[] entregaERetorno = GetCaminhoEntrega(caminhoEntrega.Last());
             string[] caminhoCompleto = CreateWholePath(caminhoEntrega, entregaERetorno);
 
-            this.CaminhoCompleto = caminhoCompleto;
+            return caminhoCompleto;
         }
 
         public string[] GetRouteWithFewestSteps(List<string[]> rotasPossiveis) 
@@ -116,7 +116,6 @@ namespace TrabahoIA_MVC.WebApplication.Models
                 count++;
             }
 
-            //count = caminhoEntrega.Length-1;
             foreach (var item in aux)
             {
                 caminhoEntrega[count] = item;
@@ -136,7 +135,6 @@ namespace TrabahoIA_MVC.WebApplication.Models
                 count++;
             }
 
-            //count = caminhoCompleto.Length-1;
             foreach (var item in entregaERetorno)
             {
                 caminhoCompleto[count] = item;
@@ -144,6 +142,26 @@ namespace TrabahoIA_MVC.WebApplication.Models
             }
 
             return caminhoCompleto;
+        }
+
+        public string CaminhoToString(String VerticeDestino) 
+        {
+            string[] felicidade = AlgoritmoDeLargura(VerticeDestino);
+            string stringdaora = "";
+            for (int i = 0; i < felicidade.Length; i++)
+            {
+                if (i == (felicidade.Length - 1))
+                {
+                    stringdaora += felicidade[i];
+                }
+                else
+                {
+                    stringdaora += felicidade[i] + "-";
+                }
+                
+            }
+
+            return stringdaora;
         }
     }
 }
