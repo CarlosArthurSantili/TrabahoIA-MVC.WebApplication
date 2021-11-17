@@ -11,11 +11,18 @@ namespace TesteLeituraGrafo
         static void Main(string[] args)
         {
             Grafo grafo = new Grafo();
-            string path = "C:\\Users\\luizp\\OneDrive\\Documentos\\Ciência da computação\\6º Fase\\Inteligência Artificial\\Lista de adjacência - Página1.tsv";
+            string path = "C:\\Users\\AL\\Documents\\Lista de adjacência - Página1.tsv";
             grafo.LerArquivo(path);
 
-            AlgoritmoBuscaProfundidade algo = new AlgoritmoBuscaProfundidade(grafo, grafo.PesquisaVertice("A0"));
-            var resultado = algo.RealizarBusca(grafo.PesquisaVertice("B3"));
+            AlgoritmoAEstrela algoritmoAestrela = new AlgoritmoAEstrela(grafo, grafo.PesquisaVertice("A0"));
+            List<Vertice> resultado = algoritmoAestrela.RealizarBusca(grafo.PesquisaVertice("F1"));
+
+            foreach (Vertice item in resultado)
+            {
+                System.Console.WriteLine(item.rotulo);
+            }
+            //AlgoritmoBuscaProfundidade algo = new AlgoritmoBuscaProfundidade(grafo, grafo.PesquisaVertice("A0"));
+            //var resultado = algo.RealizarBusca(grafo.PesquisaVertice("B3"));
 
         }
     }

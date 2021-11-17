@@ -11,9 +11,11 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
         private List<Arco> arcos = new List<Arco>();
 
         public String rotulo;
-    
-        private int visitado = 0;
 
+        public int F, G = 1, H;
+
+        private int visitado = 0;
+       
         private double distancia = 0;
 
         private String caminho = "";
