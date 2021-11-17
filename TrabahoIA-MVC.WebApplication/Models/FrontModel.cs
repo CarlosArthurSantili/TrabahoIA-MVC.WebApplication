@@ -61,10 +61,16 @@ namespace TrabahoIA_MVC.WebApplication.Models
                 string resultado = x1.RealizarBusca(vFinal);
                 rotasPossiveis.Add(resultado.Split("-"));
             }
-            string[] caminho = GetRouteWithFewestSteps(rotasPossiveis);
-            string[] entregaERetorno = GetCaminhoEntrega(caminho.Last());
-            string[] caminhoCompleto = CreateWholePath(caminho, entregaERetorno);
-            
+
+            string[] caminhoEntrega = new string[] { };
+            string[] aux = GetRouteWithFewestSteps(rotasPossiveis);
+            for (int i = aux.Length; i < 0; i--)
+            {
+                caminhoEntrega.Append(aux[i]);
+            }
+            string[] entregaERetorno = GetCaminhoEntrega(caminhoEntrega.Last());
+            string[] caminhoCompleto = CreateWholePath(caminhoEntrega, entregaERetorno);
+
             this.CaminhoCompleto = caminhoCompleto;
         }
 
@@ -96,11 +102,14 @@ namespace TrabahoIA_MVC.WebApplication.Models
             Vertice vFinal = Grafo.PesquisaVertice("O11");
             AlgoritmoBuscaLargura x1 = new AlgoritmoBuscaLargura(Grafo, vInicial);
             string resultado = x1.RealizarBusca(vFinal);
-            AlgoritmoBuscaLargura x2 = new AlgoritmoBuscaLargura(Grafo, vFinal);
-            string resultado2 = x2.RealizarBusca(vInicial);
-            
-            string[] caminhoEntrega = resultado.Split("-");
-            foreach (var item in resultado2.Split("-"))
+
+            string[] caminhoEntrega = new string[] { };
+            string[] aux = resultado.Split("-");
+            for (int i = aux.Length; i < 0; i--)
+            {
+                caminhoEntrega.Append(aux[i]);
+            }
+            foreach (var item in aux)
             {
                 caminhoEntrega.Append(item);
             }
