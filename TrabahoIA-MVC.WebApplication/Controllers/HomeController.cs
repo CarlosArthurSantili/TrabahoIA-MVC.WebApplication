@@ -39,11 +39,21 @@ namespace TrabahoIA_MVC.WebApplication.Controllers
         [HttpPost]
         public IActionResult Algoritmos(FrontModel atualizaFront)
         {
-            if(atualizaFront.AlgoritmoEscolhido == "Algoritmo2")
+            if (atualizaFront.AlgoritmoEscolhido == "Algoritmo1")
             {
                 ViewBag.robos = Front.GetPosicaoRobosToString();
-                ViewBag.caminho2 = Front.CaminhoToString(atualizaFront.VerticeDestino);
-            }          
+                ViewBag.caminho2 = Front.CaminhoProfundidadeToString(atualizaFront.VerticeDestino);
+            }
+            if (atualizaFront.AlgoritmoEscolhido == "Algoritmo2")
+            {
+                ViewBag.robos = Front.GetPosicaoRobosToString();
+                ViewBag.caminho2 = Front.CaminhoLarguraToString(atualizaFront.VerticeDestino);
+            }
+            if (atualizaFront.AlgoritmoEscolhido == "Algoritmo3")
+            {
+                ViewBag.robos = Front.GetPosicaoRobosToString();
+                ViewBag.caminho2 = Front.CaminhoAEstrelaToString(atualizaFront.VerticeDestino);
+            }
             return View(Front);
         }
 

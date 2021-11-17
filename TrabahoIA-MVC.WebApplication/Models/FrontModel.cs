@@ -141,7 +141,103 @@ namespace TrabahoIA_MVC.WebApplication.Models
             return caminhoCompleto;
         }
 
-        public string CaminhoToString(String VerticeDestino) 
+        public string[] AlgoritmoDeAEstrela(String VerticeDestino)
+        {
+            List<string[]> rotasPossiveis = new List<string[]>();
+            foreach (var robo in PosicaoRobos)
+            {
+                Vertice vInicial = Grafo.PesquisaVertice(robo);
+                Vertice vFinal = Grafo.PesquisaVertice(VerticeDestino);
+
+                AlgoritmoBuscaLargura x1 = new AlgoritmoBuscaLargura(Grafo, vInicial);
+                string resultado = x1.RealizarBusca(vFinal);
+                rotasPossiveis.Add(resultado.Split("-"));
+            }
+
+
+            string[] aux = GetRouteWithFewestSteps(rotasPossiveis);
+            string[] caminhoEntrega = new string[aux.Length];
+            int count = 0;
+            for (int i = aux.Length; i > 0; i--)
+            {
+                caminhoEntrega[count] = aux[i - 1];
+                count++;
+            }
+            string[] entregaERetorno = GetCaminhoEntrega(caminhoEntrega.Last());
+            string[] caminhoCompleto = CreateWholePath(caminhoEntrega, entregaERetorno);
+
+            return caminhoCompleto;
+        }
+
+        public string CaminhoAEstrelaToString(String VerticeDestino)
+        {
+            string[] caminhoRetornado = AlgoritmoDeLargura(VerticeDestino);
+            string caminhoCompleto = "";
+            for (int i = 0; i < caminhoRetornado.Length; i++)
+            {
+                if (i == (caminhoRetornado.Length - 1))
+                {
+                    caminhoCompleto += caminhoRetornado[i];
+                }
+                else
+                {
+                    caminhoCompleto += caminhoRetornado[i] + "-";
+                }
+
+            }
+
+            return caminhoCompleto;
+        }
+
+        public string[] AlgoritmoDeProfundidade(String VerticeDestino)
+        {
+            List<string[]> rotasPossiveis = new List<string[]>();
+            foreach (var robo in PosicaoRobos)
+            {
+                Vertice vInicial = Grafo.PesquisaVertice(robo);
+                Vertice vFinal = Grafo.PesquisaVertice(VerticeDestino);
+
+                AlgoritmoBuscaProfundidade x1 = new AlgoritmoBuscaProfundidade(Grafo, vInicial);
+                string resultado = x1.RealizarBusca(vFinal);
+                rotasPossiveis.Add(resultado.Split("-"));
+            }
+
+
+            string[] aux = GetRouteWithFewestSteps(rotasPossiveis);
+            string[] caminhoEntrega = new string[aux.Length];
+            int count = 0;
+            for (int i = aux.Length; i > 0; i--)
+            {
+                caminhoEntrega[count] = aux[i - 1];
+                count++;
+            }
+            string[] entregaERetorno = GetCaminhoEntrega(caminhoEntrega.Last());
+            string[] caminhoCompleto = CreateWholePath(caminhoEntrega, entregaERetorno);
+
+            return caminhoCompleto;
+        }
+
+        public string CaminhoProfundidadeToString(String VerticeDestino)
+        {
+            string[] caminhoRetornado = AlgoritmoDeLargura(VerticeDestino);
+            string caminhoCompleto = "";
+            for (int i = 0; i < caminhoRetornado.Length; i++)
+            {
+                if (i == (caminhoRetornado.Length - 1))
+                {
+                    caminhoCompleto += caminhoRetornado[i];
+                }
+                else
+                {
+                    caminhoCompleto += caminhoRetornado[i] + "-";
+                }
+
+            }
+
+            return caminhoCompleto;
+        }
+
+        public string CaminhoLarguraToString(String VerticeDestino) 
         {
             string[] caminhoRetornado = AlgoritmoDeLargura(VerticeDestino);
             string caminhoCompleto = "";
