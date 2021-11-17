@@ -26,6 +26,8 @@ namespace TrabahoIA_MVC.WebApplication.Models
         public string[] CaminhoCompleto { get; set; }
         public string VerticeDestino { get; set; }
 
+        public string AlgoritmoEscolhido { get; set; }
+
         public FrontModel()
         {
             Grafo = new Grafo("Models\\grafo.tsv");
@@ -47,7 +49,7 @@ namespace TrabahoIA_MVC.WebApplication.Models
         }
 
         
-        public void AlgoritmoDeProfundidade(String VerticeDestino) 
+        public void AlgoritmoDeLargura(String VerticeDestino) 
         {
             List<string[]> rotasPossiveis = new List<string[]>();
             foreach (var robo in PosicaoRobos)
@@ -92,9 +94,9 @@ namespace TrabahoIA_MVC.WebApplication.Models
         {
             Vertice vInicial = Grafo.PesquisaVertice(robo);
             Vertice vFinal = Grafo.PesquisaVertice("O11");
-            AlgoritmoBuscaProfundidade x1 = new AlgoritmoBuscaProfundidade(Grafo, vInicial);
+            AlgoritmoBuscaLargura x1 = new AlgoritmoBuscaLargura(Grafo, vInicial);
             string resultado = x1.RealizarBusca(vFinal);
-            AlgoritmoBuscaProfundidade x2 = new AlgoritmoBuscaProfundidade(Grafo, vFinal);
+            AlgoritmoBuscaLargura x2 = new AlgoritmoBuscaLargura(Grafo, vFinal);
             string resultado2 = x2.RealizarBusca(vInicial);
             
             string[] caminhoEntrega = resultado.Split("-");

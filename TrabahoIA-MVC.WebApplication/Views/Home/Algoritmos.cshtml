@@ -57,14 +57,21 @@
 @using (Html.BeginForm("Algoritmos", "Home", FormMethod.Post))
 {
 
-    <div>
+<div>
 
-        @Html.TextBoxFor(m => m.VerticeDestino)
+    @Html.DropDownListFor(m => m.AlgoritmoEscolhido, new List<SelectListItem>
+               { new SelectListItem{Text="Algoritmo1", Value="Algoritmo1"},
+                 new SelectListItem{Text="Algoritmo2", Value="Algoritmo2"},
+                 new SelectListItem{Text="Algoritmo3", Value="Algoritmo3"},
+                 new SelectListItem{Text="Algoritmo4", Value="Algoritmo4"},
+                 new SelectListItem{Text="Algoritmo5", Value="Algoritmo5"}}, "Please select")
 
-        <label>
-            Insira o valor: <input id="input" style="width: 350px" class="form-control" type="text" placeholder="Insira o local onde tu quer que o robô vá!" />
-        </label>
-    </div>
+    @Html.TextBoxFor(m => m.VerticeDestino)
+
+    <label>
+        Insira o valor: <input id="input" style="width: 350px" class="form-control" type="text" placeholder="Insira o local onde tu quer que o robô vá!" />
+    </label>
+</div>
 
     <br>
     <br>
