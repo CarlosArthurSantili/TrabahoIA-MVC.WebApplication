@@ -11,55 +11,67 @@ namespace TrabalhoIA_MVC.ClassLibrary.Algoritmos
     {
         Grafo grafo;
         Vertice primeiroVertice;
-        Vertice verticepai;
-        Vertice verticeMinimo = null;
-        int valorG = 0;
-        List<Vertice> resultado;
-
+        Vertice verticepai;      
+        List<Vertice> listaFechada;
+        List<Vertice> listaAberta;
+       
 
         public AlgoritmoAEstrela(Grafo grafo, Vertice vertice)
         {
-            resultado = new List<Vertice>();
+            
+            verticepai = null;
+            listaFechada = new List<Vertice>();
+            listaAberta = new List<Vertice>();
             this.grafo = grafo;
             this.primeiroVertice = vertice;
         }
 
-        public List<Vertice> RealizarBusca(Vertice destino)
+        public string RealizarBusca(Vertice destino)
         {
 
-            
-            List<Vertice> vertices = grafo.ObterVertices();
+                      
 
-            foreach (Vertice vertice in vertices)
+            listaAberta.Add(primeiroVertice);
+            
+
+            while (listaAberta.Count != 0 && !listaFechada.Exists(x => x.rotulo == destino.rotulo))
             {
-                vertice.zerarVisitas();                
+                verticepai = listaAberta[0];               
+                listaAberta.RemoveAll(x => x.rotulo == verticepai.rotulo);
+                listaFechada.Add(verticepai);
+                
+
+
+                foreach (Arco arco in verticepai.ObterArcos())
+                {
+                    Vertice verticeAdjacente = (arco.getDestino());
+                    if (!listaFechada.Any(item => item.rotulo == verticeAdjacente.rotulo))
+                    {
+                        if (!listaAberta.Any(item => item.rotulo == verticeAdjacente.rotulo))
+                        {
+                            verticeAdjacente.setPai(verticepai);
+                            CalcularF(ref verticeAdjacente, destino);
+                            listaAberta.Add(verticeAdjacente);
+                            listaAberta = listaAberta.OrderBy(node => node.rotulo).ToList<Vertice>();
+                        }
+                    }
+                }
             }
+              
 
-            primeiroVertice.visitar();
-
-            
-            resultado.Add(primeiroVertice);
-            verticepai = primeiroVertice;
-
-            CalcularF(ref verticepai, destino);
-
+            Vertice temp = listaFechada.Find(item=> item.rotulo == verticepai.rotulo);
+            if (temp == null) return null;
+            string caminho = "";
             do
             {
-                verticepai = CalculaValorMinimo(verticepai, destino);
-                resultado.Add(verticepai);
-            } while (verticepai != destino);         
-           
+                caminho += temp.rotulo + '-';
+                temp = temp.getPai();
+            } while (temp != primeiroVertice && temp != null);
+            return caminho += primeiroVertice.rotulo;
 
 
-
-            return resultado;
         }
 
-        public int CalcularValorG(Vertice atual)
-        {   
-            
-            return 0;
-        }
         public int CalcularHeuristica(Vertice atual, Vertice destino)
         {
 
@@ -72,41 +84,10 @@ namespace TrabalhoIA_MVC.ClassLibrary.Algoritmos
         public void CalcularF(ref Vertice atual, Vertice destino)
         {
             atual.H = CalcularHeuristica(atual, destino);
-            atual.G = valorG;
+            atual.G = atual.getPai().G + 1;
             atual.F = atual.G + atual.H;
         }
 
 
-        public Vertice CalculaValorMinimo(Vertice atual, Vertice destino)
-        {
-           Vertice verticeMinimo = null;
-            
-            foreach (Arco arco in atual.ObterArcos())
-            {
-                Vertice verticeAdjacente = (arco.getDestino());
-
-                //nao esquecer de adicionar um if == prateleira continue
-                if (verticeAdjacente.obterVisitado() == 1)
-                    continue;
-
-                if (verticeAdjacente == destino)
-                    return verticeAdjacente;
-
-                CalcularF(ref verticeAdjacente, destino);                
-
-                if (verticeMinimo == null)
-                    verticeMinimo = verticeAdjacente;
-                else if (verticeAdjacente.F < verticeMinimo.F)
-                {
-                    verticeMinimo = verticeAdjacente;
-                    verticepai = verticeAdjacente;
-                }
-
-            }
-
-            verticepai.visitar();
-
-            return verticeMinimo;
-        }
-}
+       }
 }

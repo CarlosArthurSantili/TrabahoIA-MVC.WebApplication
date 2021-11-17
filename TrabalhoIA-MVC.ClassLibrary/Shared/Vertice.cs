@@ -12,7 +12,7 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
 
         public String rotulo;
 
-        public int F, G = 1, H;
+        public int F, G = 0, H;
 
         private int visitado = 0;
        
@@ -23,6 +23,17 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
         private int nArvore;
 
         private List<Arco> caminhoLista;
+
+        private Vertice Pai { get; set; }
+
+        public Vertice getPai()
+        {
+            return this.Pai;
+        }
+        public void setPai(Vertice pai)
+        {
+            this.Pai = pai;
+        }
 
         public Vertice(String rotulo)
         {
