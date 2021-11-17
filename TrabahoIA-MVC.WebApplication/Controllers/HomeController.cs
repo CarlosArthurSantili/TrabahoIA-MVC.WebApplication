@@ -41,8 +41,7 @@ namespace TrabahoIA_MVC.WebApplication.Controllers
         {
             if(atualizaFront.AlgoritmoEscolhido == "Algoritmo2")
             {
-                //this.Front = new FrontModel();
-                ViewBag.caminho = Front.AlgoritmoDeLargura(atualizaFront.VerticeDestino);
+                //ViewBag.caminho = Front.AlgoritmoDeLargura(atualizaFront.VerticeDestino);
                 ViewBag.caminho2 = Front.CaminhoToString(atualizaFront.VerticeDestino);
             }          
             return View(Front);

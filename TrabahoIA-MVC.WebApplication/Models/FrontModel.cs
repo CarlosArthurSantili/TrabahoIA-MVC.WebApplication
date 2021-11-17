@@ -95,7 +95,7 @@ namespace TrabahoIA_MVC.WebApplication.Models
 
         private void UpdateRobotsPositions(string[] caminho, int robot)
         {
-            string lastPosition = caminho.Last();
+            string lastPosition = caminho.First();
             PosicaoRobos[robot] = lastPosition;
         }
 
