@@ -53,29 +53,40 @@
 <br>
 <br>
 
-<div>
-    <label>
-        Insira o valor: <input id="input" style="width: 350px" class="form-control" type="text" placeholder="Insira o local onde tu quer que o robô vá!" />
-    </label>
-</div>
 
-<br>
-<br>
+@using (Html.BeginForm("Algoritmos", "Home", FormMethod.Post))
+{
 
-<div>
     <div>
-        <label>Selecione um dos algoritmos:</label>
+
+        @Html.TextBoxFor(m => m.VerticeDestino)
+
+        <label>
+            Insira o valor: <input id="input" style="width: 350px" class="form-control" type="text" placeholder="Insira o local onde tu quer que o robô vá!" />
+        </label>
     </div>
-    <button type="button" class="alert" onclick="Profundidade();">Algoritmo 1</button>
-    <button class="alert">Algoritmo 2</button>
-    <button class="alert">Algoritmo 3</button>
-    <button class="alert">Algoritmo 4</button>
-    <button class="alert">Algoritmo 5</button>
-</div>
+
+    <br>
+    <br>
+
+    <div>
+        <div>
+            <label>Selecione um dos algoritmos:</label>
+        </div>
+        <input type="submit" class="alert" value="Submit" />
+        <button type="button" class="alert" onclick="Profundidade();">Algoritmo 1</button>
+        <button class="alert">Algoritmo 2</button>
+        <button class="alert">Algoritmo 3</button>
+        <button class="alert">Algoritmo 4</button>
+        <button class="alert">Algoritmo 5</button>
+    </div>
+
+}
+@Model.CaminhoCompleto
 
 <script>
     function Profundidade() {
-         var idVerticeDestino = document.getElementById("input").value;
+        var idVerticeDestino = document.getElementById("input").value;
         var caminho = (dotNetHelper, idVerticeDestino) => {
             return dotNetHelper.invokeMethodAsync('AlgoritmoDeProfundidade', idVerticeDestino);
         };
@@ -105,33 +116,22 @@
     }
 </script>
 
-@functions
-{
-    private string? name;
-    private string? result;
-    private DotNetObjectReference<CallDotNetExample3>? objRef;
 
-    public async Task TriggerDotNetInstanceMethod()
-    {
-        objRef = DotNetObjectReference.Create(this);
-        result = await JS.InvokeAsync<string> ("sayHello2", objRef, name);
+
+<style>
+    .grid-container {
+        width: 75%;
+        display: grid;
+        grid-template-columns: 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6%;
+        grid-gap: 1%;
+        background-color: white;
+        padding: 3.5%;
     }
-}
 
-    <style>
-        .grid-container {
-            width: 75%;
-            display: grid;
-            grid-template-columns: 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6%;
-            grid-gap: 1%;
-            background-color: white;
-            padding: 3.5%;
+        .grid-container > div {
+            background-color: #c5c5de;
+            text-align: center;
+            padding: 0px;
+            font-size: 25px;
         }
-
-            .grid-container > div {
-                background-color: #c5c5de;
-                text-align: center;
-                padding: 0px;
-                font-size: 25px;
-            }
-    </style>
+</style>

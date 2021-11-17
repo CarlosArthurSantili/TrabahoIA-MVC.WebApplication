@@ -23,6 +23,8 @@ namespace TrabahoIA_MVC.WebApplication.Models
 
         public string[] Passos { get; set; }
         public string[] PosicaoRobos { get; set; }
+        public string[] CaminhoCompleto { get; set; }
+        public string VerticeDestino { get; set; }
 
         public FrontModel()
         {
@@ -44,15 +46,16 @@ namespace TrabahoIA_MVC.WebApplication.Models
             RobotInitialIds = idsData.GetRobotInitialPlaces();
         }
 
-        [JSInvokable]
-        public string[] AlgoritmoDeProfundidade(string IdVerticeDestino) 
+        
+        public void AlgoritmoDeProfundidade(String VerticeDestino) 
         {
             List<string[]> rotasPossiveis = new List<string[]>();
             foreach (var robo in PosicaoRobos)
             {
-                Vertice vInicial = new Vertice(robo);
-                Vertice vFinal = new Vertice(IdVerticeDestino);
-                AlgoritmoBuscaProfundidade x1 = new AlgoritmoBuscaProfundidade(Grafo, vInicial);
+                Vertice vInicial = Grafo.PesquisaVertice(robo);
+                Vertice vFinal = Grafo.PesquisaVertice(VerticeDestino);
+                
+                AlgoritmoBuscaLargura x1 = new AlgoritmoBuscaLargura(Grafo, vInicial);
                 string resultado = x1.RealizarBusca(vFinal);
                 rotasPossiveis.Add(resultado.Split("-"));
             }
@@ -60,7 +63,7 @@ namespace TrabahoIA_MVC.WebApplication.Models
             string[] entregaERetorno = GetCaminhoEntrega(caminho.Last());
             string[] caminhoCompleto = CreateWholePath(caminho, entregaERetorno);
             
-            return caminhoCompleto;
+            this.CaminhoCompleto = caminhoCompleto;
         }
 
         public string[] GetRouteWithFewestSteps(List<string[]> rotasPossiveis) 
@@ -87,8 +90,8 @@ namespace TrabahoIA_MVC.WebApplication.Models
 
         private string[] GetCaminhoEntrega(string robo)
         {
-            Vertice vInicial = new Vertice(robo);
-            Vertice vFinal = new Vertice("O11");
+            Vertice vInicial = Grafo.PesquisaVertice(robo);
+            Vertice vFinal = Grafo.PesquisaVertice("O11");
             AlgoritmoBuscaProfundidade x1 = new AlgoritmoBuscaProfundidade(Grafo, vInicial);
             string resultado = x1.RealizarBusca(vFinal);
             AlgoritmoBuscaProfundidade x2 = new AlgoritmoBuscaProfundidade(Grafo, vFinal);

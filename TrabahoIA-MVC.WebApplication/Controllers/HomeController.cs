@@ -33,6 +33,15 @@ namespace TrabahoIA_MVC.WebApplication.Controllers
             FrontModel front = new FrontModel();
             return View(front);
         }
+
+        [HttpPost]
+        public IActionResult Algoritmos(FrontModel front)
+        {
+            FrontModel front2 = new FrontModel();
+            string verticeDestino = front.VerticeDestino;
+            front2.AlgoritmoDeProfundidade(front.VerticeDestino);
+            return View(front);
+        }
         public IActionResult BuscaLargura()
         {
             return View();
