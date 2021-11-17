@@ -45,6 +45,16 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
             return false;
         }
 
+        internal void zerarCaminho()
+        {
+            this.caminho = "";
+        }
+
+        internal void zerarCaminhoLista()
+        {
+            this.caminhoLista = new List<Arco>();
+        }
+
         public List<Arco> ObterArcos()
         {
             return this.arcos;

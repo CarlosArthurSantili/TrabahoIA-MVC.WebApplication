@@ -20,13 +20,14 @@ namespace TrabalhoIA_MVC.ClassLibrary.Algoritmos
 
         public string RealizarBusca(Vertice destino)
         {
-            List<Vertice> resultado = new List<Vertice>();
             List<Vertice> vertices = grafo.ObterVertices();
 
             foreach (Vertice vertice in vertices)
             {
                 vertice.zerarVisitas();
                 vertice.zerarDistancia();
+                vertice.zerarCaminho();
+                vertice.zerarCaminhoLista();
             }
 
             primeiroVertice.visitar();
@@ -36,35 +37,40 @@ namespace TrabalhoIA_MVC.ClassLibrary.Algoritmos
 
             while (fila.Count() != 0)
             {
-                Vertice vp = (Vertice)fila.Dequeue();
-                List<Vertice> vpAdjacentes = new List<Vertice>();
+                Vertice verticeAtual = (Vertice)fila.Dequeue();
 
-                foreach (Arco arco in vp.ObterArcos())
+                foreach (Arco arco in verticeAtual.ObterArcos())
                 { 
-                    Vertice vpAdjacente = (arco.getDestino());
-                    if (vpAdjacente.obterVisitado() == 0)
+                    Vertice verticeAtualAdjacente = (arco.getDestino());
+                    if (verticeAtualAdjacente.obterVisitado() == 0)
                     {
-                        vpAdjacente.visitar();
-                        vpAdjacente.definirDistancia((vp.obterDistancia()) + (1));
-                        fila.Enqueue(vpAdjacente);
+                        verticeAtualAdjacente.visitar();
+                        verticeAtualAdjacente.definirDistancia((verticeAtual.obterDistancia()) + (1));
+                        fila.Enqueue(verticeAtualAdjacente);
 
-                        List<Arco> caminhoLista = vpAdjacente.getCaminhoLista();
+                        List<Arco> caminhoLista = verticeAtualAdjacente.getCaminhoLista();
                         caminhoLista.Add(arco);
-                        vpAdjacente.setCaminhoLista(caminhoLista);
+                        verticeAtualAdjacente.setCaminhoLista(caminhoLista);
                     }
                 }
 
-                vp.visitar();
-                if (vp.rotulo == destino.rotulo)
+                verticeAtual.visitar();
+                if (verticeAtual.rotulo == destino.rotulo)
                 {
-                    string caminho = vp.rotulo + '-';
-                    Vertice verticecaminho = vp;
+                    string caminho = verticeAtual.rotulo + '-';
+                    Vertice verticecaminho = verticeAtual;
                     while (verticecaminho.rotulo != this.primeiroVertice.rotulo)
                     {
-                        caminho += verticecaminho.getCaminhoLista()[0].getOrigem().toString() + '-';
-                        verticecaminho = verticecaminho.getCaminhoLista()[0].getOrigem();
+                        try
+                        {
+                            caminho += verticecaminho.getCaminhoLista()[0].getOrigem().toString() + '-';
+                            verticecaminho = verticecaminho.getCaminhoLista()[0].getOrigem();
+                        }
+                        catch (Exception e)
+                        {
+                            break;
+                        }
                     }
-
                     return caminho.Remove(caminho.Length - 1);
                 }
             }

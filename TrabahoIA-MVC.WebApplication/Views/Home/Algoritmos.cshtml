@@ -56,36 +56,28 @@
 
 @using (Html.BeginForm("Algoritmos", "Home", FormMethod.Post))
 {
+    <div class="form-group">
+        <label>
+            Insira o valor:
+        </label>
+        @Html.TextBoxFor(m => m.VerticeDestino, new { @class = "form-control", @placeholder = "Insira o local onde tu quer que o robô vá!", @style = "width: 350px" })
+    </div>
 
-<div>
-
-    @Html.DropDownListFor(m => m.AlgoritmoEscolhido, new List<SelectListItem>
-               { new SelectListItem{Text="Algoritmo1", Value="Algoritmo1"},
-                 new SelectListItem{Text="Algoritmo2", Value="Algoritmo2"},
-                 new SelectListItem{Text="Algoritmo3", Value="Algoritmo3"},
-                 new SelectListItem{Text="Algoritmo4", Value="Algoritmo4"},
-                 new SelectListItem{Text="Algoritmo5", Value="Algoritmo5"}}, "Please select")
-
-    @Html.TextBoxFor(m => m.VerticeDestino)
-
-    <label>
-        Insira o valor: <input id="input" style="width: 350px" class="form-control" type="text" placeholder="Insira o local onde tu quer que o robô vá!" />
-    </label>
-</div>
-
+    <div>
+        <label>Por favor, Selecione um algoritmo:</label>
+        @Html.DropDownListFor(m => m.AlgoritmoEscolhido, new List<SelectListItem>
+                   { new SelectListItem{Text="Algoritmo em profundidade", Value="Algoritmo1"},
+                     new SelectListItem{Text="Algoritmo em largura", Value="Algoritmo2"},
+                     new SelectListItem{Text="Busca em A*", Value="Algoritmo3"},
+                     new SelectListItem{Text="Busca bidirecional", Value="Algoritmo4"},
+                     new SelectListItem{Text="Algoritmo5", Value="Algoritmo5"}},
+                     new { @class = "form-control", @type = "button", @style = "width: 350px" })
+    </div>
     <br>
     <br>
 
     <div>
-        <div>
-            <label>Selecione um dos algoritmos:</label>
-        </div>
-        <input type="submit" class="alert" value="Submit" />
-        <button type="button" class="alert" onclick="Profundidade();">Algoritmo 1</button>
-        <button class="alert">Algoritmo 2</button>
-        <button class="alert">Algoritmo 3</button>
-        <button class="alert">Algoritmo 4</button>
-        <button class="alert">Algoritmo 5</button>
+        <input type="submit" class="alert" value="Começar" />
     </div>
 
 }
