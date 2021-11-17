@@ -11,9 +11,11 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
         private List<Arco> arcos = new List<Arco>();
 
         public String rotulo;
-    
-        private int visitado = 0;
 
+        public int F, G = 0, H;
+
+        private int visitado = 0;
+       
         private double distancia = 0;
 
         private String caminho = "";
@@ -21,6 +23,17 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
         private int nArvore;
 
         private List<Arco> caminhoLista;
+
+        private Vertice Pai { get; set; }
+
+        public Vertice getPai()
+        {
+            return this.Pai;
+        }
+        public void setPai(Vertice pai)
+        {
+            this.Pai = pai;
+        }
 
         public Vertice(String rotulo)
         {

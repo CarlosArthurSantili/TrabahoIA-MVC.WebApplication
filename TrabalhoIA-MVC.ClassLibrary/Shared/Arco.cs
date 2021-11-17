@@ -11,6 +11,7 @@ namespace TrabalhoIA_MVC.ClassLibrary.Shared
         private Vertice destino;
         private Vertice origem;
         private double peso;
+       
 
         private bool seguro;
         private double fluxo = 0;
