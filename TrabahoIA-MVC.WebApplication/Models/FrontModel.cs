@@ -15,7 +15,6 @@ namespace TrabahoIA_MVC.WebApplication.Models
         public Dictionary<string, string> IdsDictionary { get; set; }
         public List<string> ShelvesList { get; set; }
         public List<string> UnreachbleIds { get; set; }
-        public List<string> RobotInitialIds { get; set; }
 
 
         public AlgoritmoBuscaProfundidade algoritmoBuscaProfundidade;
@@ -44,8 +43,6 @@ namespace TrabahoIA_MVC.WebApplication.Models
             ShelvesList = idsData.GetShelvesIds();
             UnreachbleIds = new List<string>();
             UnreachbleIds = idsData.GetUnreachableIds();
-            RobotInitialIds = new List<string>();
-            RobotInitialIds = idsData.GetRobotInitialPlaces();
         }
 
         
@@ -146,22 +143,41 @@ namespace TrabahoIA_MVC.WebApplication.Models
 
         public string CaminhoToString(String VerticeDestino) 
         {
-            string[] felicidade = AlgoritmoDeLargura(VerticeDestino);
-            string stringdaora = "";
-            for (int i = 0; i < felicidade.Length; i++)
+            string[] caminhoRetornado = AlgoritmoDeLargura(VerticeDestino);
+            string caminhoCompleto = "";
+            for (int i = 0; i < caminhoRetornado.Length; i++)
             {
-                if (i == (felicidade.Length - 1))
+                if (i == (caminhoRetornado.Length - 1))
                 {
-                    stringdaora += felicidade[i];
+                    caminhoCompleto += caminhoRetornado[i];
                 }
                 else
                 {
-                    stringdaora += felicidade[i] + "-";
+                    caminhoCompleto += caminhoRetornado[i] + "-";
                 }
                 
             }
 
-            return stringdaora;
+            return caminhoCompleto;
+        }
+
+        public string GetPosicaoRobosToString() 
+        {
+            string posicoesRobos = "";
+            for (int i = 0; i < PosicaoRobos.Length; i++)
+            {
+                if (i == (PosicaoRobos.Length - 1))
+                {
+                    posicoesRobos += PosicaoRobos[i];
+                }
+                else
+                {
+                    posicoesRobos += PosicaoRobos[i] + "-";
+                }
+
+            }
+
+            return posicoesRobos;
         }
     }
 }

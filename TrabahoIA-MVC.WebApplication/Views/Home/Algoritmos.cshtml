@@ -15,26 +15,6 @@
         {
             <div id="@id.Key">@id.Value</div>
         }
-        else if (id.Key == "A12")
-        {
-            <div style="background-color: green" id="@id.Key">R1</div>
-        }
-        else if (id.Key == "B12")
-        {
-            <div style="background-color: orchid" id="@id.Key">R2</div>
-        }
-        else if (id.Key == "C12")
-        {
-            <div style="background-color: orange" id="@id.Key">R3</div>
-        }
-        else if (id.Key == "D12")
-        {
-            <div style="background-color: yellow" id="@id.Key">R4</div>
-        }
-        else if (id.Key == "E12")
-        {
-            <div style="background-color: skyblue" id="@id.Key">R5</div>
-        }
         else if (Model.UnreachbleIds.Contains(id.Key))
         {
             //não adicionar nada
@@ -89,10 +69,11 @@
 @ViewBag.caminho2
 
 <script>
-    
+
     var stringcaminho = "@(ViewBag.caminho2)";
 
     async function WalkThrough() {
+        SetRobosPositions();
         console.log(stringcaminho);
         var caminho = stringcaminho.split("-");
         console.log(caminho);
@@ -111,6 +92,16 @@
                 document.getElementById(caminho[i]).style = "background-color: #c5c5de";
                 await sleep(300);
             }
+        }
+    }
+
+    var stringrobos = "@(ViewBag.robos)";
+    async function SetRobosPositions() {
+
+        var robozinhos = stringrobos.split("-");
+        var count = stringrobos.length;
+        for (var i = 0; i < count; i++) {
+            document.getElementById(robozinhos[i]).style = "background-color: red";
         }
     }
 
