@@ -40,7 +40,7 @@ namespace TrabalhoIA_MVC.ClassLibrary.Algoritmos
                 List<Vertice> vpAdjacentes = new List<Vertice>();
 
                 foreach (Arco arco in vp.ObterArcos())
-                {
+                { 
                     Vertice vpAdjacente = (arco.getDestino());
                     if (vpAdjacente.obterVisitado() == 0)
                     {

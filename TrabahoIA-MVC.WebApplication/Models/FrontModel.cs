@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.JSInterop;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,60 +12,107 @@ namespace TrabahoIA_MVC.WebApplication.Models
     {
         private readonly IdsData idsData;
 
-        public List<string> IdsList { get; set; }
-        public AlgoritmoBuscaProfundidade algoritmoBuscaProfundidade;
-        public string[] Passos { get; set; }
-        public Grafo Grafo { get; set; }
-        public Vertice VerticeInicial { get; set; }
-        public Vertice VerticeFinal { get; set; }
+        public Dictionary<string, string> IdsDictionary { get; set; }
+        public List<string> ShelvesList { get; set; }
+        public List<string> UnreachbleIds { get; set; }
+        public List<string> RobotInitialIds { get; set; }
 
-        public List<string> teste { get; set; }
+
+        public AlgoritmoBuscaProfundidade algoritmoBuscaProfundidade;
+        public Grafo Grafo { get; set; }
+
+        public string[] Passos { get; set; }
+        public string[] PosicaoRobos { get; set; }
+        public string[] CaminhoCompleto { get; set; }
+        public string VerticeDestino { get; set; }
 
         public FrontModel()
         {
+            Grafo = new Grafo("Models\\grafo.tsv");
             idsData = new IdsData();
-            IdsList = new List<string>();
-            teste = new List<string>();
-            IdsList = idsData.GetIdsList();
-            Teste();
+            PosicaoRobos = new string[] {"A12", "B12", "C12", "D12", "E12"};
+            PrepareIdsLists();
         }
 
-        public void Teste()
+        public void PrepareIdsLists() 
         {
-            teste.Add("A0");
-            teste.Add("A1");
-            teste.Add("A2");
-            teste.Add("A3");
-            teste.Add("A4");
-            teste.Add("A5");
+            IdsDictionary = new Dictionary<string, string>();
+            IdsDictionary = idsData.GetIdsDictionary();
+            ShelvesList = new List<string>();
+            ShelvesList = idsData.GetShelvesIds();
+            UnreachbleIds = new List<string>();
+            UnreachbleIds = idsData.GetUnreachableIds();
+            RobotInitialIds = new List<string>();
+            RobotInitialIds = idsData.GetRobotInitialPlaces();
         }
 
-        public void ProcessarCaminho()
+        
+        public void AlgoritmoDeProfundidade(String VerticeDestino) 
         {
-            algoritmoBuscaProfundidade = new AlgoritmoBuscaProfundidade(Grafo, VerticeInicial);
-            Passos = algoritmoBuscaProfundidade.RealizarBusca(VerticeFinal).Split('-');
-        }
-
-        /*
-         @functions
-{
-    void WalkThrough()
-    {
-        string lastId = Model.teste[0];
-        foreach (var passo in Model.teste)
-        {
-            if (Html.Raw($@"document.getElementById(@lastId)"))
+            List<string[]> rotasPossiveis = new List<string[]>();
+            foreach (var robo in PosicaoRobos)
             {
-                document.getElementById(@lastId).innerHTML('@lastId');
+                Vertice vInicial = Grafo.PesquisaVertice(robo);
+                Vertice vFinal = Grafo.PesquisaVertice(VerticeDestino);
+                
+                AlgoritmoBuscaLargura x1 = new AlgoritmoBuscaLargura(Grafo, vInicial);
+                string resultado = x1.RealizarBusca(vFinal);
+                rotasPossiveis.Add(resultado.Split("-"));
             }
-            if (Html.Raw($@"document.getElementById(@passo)"))
-            {
-                document.getElementById(@passo).innerHTML('X');
-                lastId = passo;
-            }
+            string[] caminho = GetRouteWithFewestSteps(rotasPossiveis);
+            string[] entregaERetorno = GetCaminhoEntrega(caminho.Last());
+            string[] caminhoCompleto = CreateWholePath(caminho, entregaERetorno);
+            
+            this.CaminhoCompleto = caminhoCompleto;
         }
-    }
-}
-         */
+
+        public string[] GetRouteWithFewestSteps(List<string[]> rotasPossiveis) 
+        {
+            int count = -1;
+            string[] menorRota = rotasPossiveis[0];
+            foreach (var rota in rotasPossiveis)
+            {
+                count++;
+                if (rota.Length < menorRota.Length)
+                {
+                    menorRota = rota;
+                }
+            }
+            UpdateRobotsPositions(menorRota, count);
+            return menorRota;
+        }
+
+        private void UpdateRobotsPositions(string[] caminho, int robot)
+        {
+            string lastPosition = caminho.Last();
+            PosicaoRobos[robot] = lastPosition;
+        }
+
+        private string[] GetCaminhoEntrega(string robo)
+        {
+            Vertice vInicial = Grafo.PesquisaVertice(robo);
+            Vertice vFinal = Grafo.PesquisaVertice("O11");
+            AlgoritmoBuscaProfundidade x1 = new AlgoritmoBuscaProfundidade(Grafo, vInicial);
+            string resultado = x1.RealizarBusca(vFinal);
+            AlgoritmoBuscaProfundidade x2 = new AlgoritmoBuscaProfundidade(Grafo, vFinal);
+            string resultado2 = x2.RealizarBusca(vInicial);
+            
+            string[] caminhoEntrega = resultado.Split("-");
+            foreach (var item in resultado2.Split("-"))
+            {
+                caminhoEntrega.Append(item);
+            }
+            return caminhoEntrega;
+        }
+
+        private string[] CreateWholePath(string[] caminho, string[] entregaERetorno)
+        {
+            string[] caminhoCompleto = caminho;
+            foreach (var item in entregaERetorno)
+            {
+                caminhoCompleto.Append(item);
+            }
+            return caminhoCompleto;
+        }
     }
 }

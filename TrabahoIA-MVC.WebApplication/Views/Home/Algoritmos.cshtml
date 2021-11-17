@@ -1,7 +1,6 @@
 ﻿@*
 
 *@
-@using Microsoft.AspNetCore.Html
 @model FrontModel;
 @{
 
@@ -9,52 +8,124 @@
 
 <h1>Algoritmos</h1>
 
-<div class="grid-container" style="width: auto">
-    @foreach (var id in Model.IdsList)
+<div class="grid-container">
+    @foreach (var id in Model.IdsDictionary)
     {
-        <div id="@id">@id</div>
+        if (Model.ShelvesList.Contains(id.Key))
+        {
+            <div id="@id.Key">@id.Value</div>
+        }
+        else if (id.Key == "A12")
+        {
+            <div style="background-color: green" id="@id.Key">R1</div>
+        }
+        else if (id.Key == "B12")
+        {
+            <div style="background-color: orchid" id="@id.Key">R2</div>
+        }
+        else if (id.Key == "C12")
+        {
+            <div style="background-color: orange" id="@id.Key">R3</div>
+        }
+        else if (id.Key == "D12")
+        {
+            <div style="background-color: yellow" id="@id.Key">R4</div>
+        }
+        else if (id.Key == "E12")
+        {
+            <div style="background-color: skyblue" id="@id.Key">R5</div>
+        }
+        else if (Model.UnreachbleIds.Contains(id.Key))
+        {
+            //não adicionar nada
+        }
+        else if (id.Key == "O11")
+        {
+            <div id="@id.Key">X</div>
+        }
+        else
+        {
+            <div id="@id.Key">⠀</div>
+        }
     }
 </div>
 
 <br>
 <br>
 
-<div>
-    <label>
-        Insira o valor: <input style="width: 350px" class="form-control" type="text" placeholder="Insira o local onde tu quer que o robô vá!" />
-    </label>
-</div>
 
-<br>
-<br>
+@using (Html.BeginForm("Algoritmos", "Home", FormMethod.Post))
+{
 
-<div>
     <div>
-        <label>Selecione um dos algoritmos:</label>
+
+        @Html.TextBoxFor(m => m.VerticeDestino)
+
+        <label>
+            Insira o valor: <input id="input" style="width: 350px" class="form-control" type="text" placeholder="Insira o local onde tu quer que o robô vá!" />
+        </label>
     </div>
-    <button class="alert" onclick="WalkThrough()">Algoritmo 1</button>
-    <button class="alert">Algoritmo 2</button>
-    <button class="alert">Algoritmo 3</button>
-    <button class="alert">Algoritmo 4</button>
-    <button class="alert">Algoritmo 5</button>
-</div>
+
+    <br>
+    <br>
+
+    <div>
+        <div>
+            <label>Selecione um dos algoritmos:</label>
+        </div>
+        <input type="submit" class="alert" value="Submit" />
+        <button type="button" class="alert" onclick="Profundidade();">Algoritmo 1</button>
+        <button class="alert">Algoritmo 2</button>
+        <button class="alert">Algoritmo 3</button>
+        <button class="alert">Algoritmo 4</button>
+        <button class="alert">Algoritmo 5</button>
+    </div>
+
+}
+@Model.CaminhoCompleto
 
 <script>
+    function Profundidade() {
+        var idVerticeDestino = document.getElementById("input").value;
+        var caminho = (dotNetHelper, idVerticeDestino) => {
+            return dotNetHelper.invokeMethodAsync('AlgoritmoDeProfundidade', idVerticeDestino);
+        };
+        WalkThrough(caminho);
+    }
 
+    async function WalkThrough(caminho) {
+        count = caminho.count;
+        document.getElementById(caminho[0]).style = "background-color: #c5c5de";
+        for (var i = 0; i < count; i++) {
+            if (i == (count - 1)) {
+                document.getElementById(caminho[i]).style = "background-color: red";
+            }
+            else {
+                document.getElementById(caminho[i]).style = "background-color: red";
+                await sleep(600);
+                document.getElementById(caminho[i]).style = "background-color: #c5c5de";
+                await sleep(600);
+            }
+        }
+    }
 
+    function sleep(ms) {
+        return new Promise(
+            resolve => setTimeout(resolve, ms)
+        );
+    }
 </script>
-
 
 
 
 <style>
     .grid-container {
-        width: auto;
+        width: 75%;
         display: grid;
-        grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
-        grid-gap: 5px;
-        background-color: #ababb8;
-        padding: 5px;
+        grid-template-columns: 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6%;
+        grid-gap: 1%;
+        background-color: white;
+        padding: 3.5%;
     }
 
         .grid-container > div {
