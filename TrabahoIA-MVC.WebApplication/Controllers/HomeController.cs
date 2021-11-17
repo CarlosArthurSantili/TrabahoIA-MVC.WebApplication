@@ -13,6 +13,8 @@ namespace TrabahoIA_MVC.WebApplication.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        static FrontModel Front;
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -29,18 +31,20 @@ namespace TrabahoIA_MVC.WebApplication.Controllers
         }
 
         public IActionResult Algoritmos() 
-        {
-            FrontModel front = new FrontModel();
-            return View(front);
+        {            
+            Front = new FrontModel();
+            return View(Front);
         }
 
         [HttpPost]
-        public IActionResult Algoritmos(FrontModel front)
+        public IActionResult Algoritmos(FrontModel atualizaFront)
         {
-            FrontModel front2 = new FrontModel();
-            string verticeDestino = front.VerticeDestino;
-            front2.AlgoritmoDeProfundidade(front.VerticeDestino);
-            return View(front);
+            if(atualizaFront.AlgoritmoEscolhido == "Algoritmo1")
+            {
+                //this.Front = new FrontModel();
+                Front.AlgoritmoDeLargura(atualizaFront.VerticeDestino);
+            }          
+            return View(Front);
         }
         public IActionResult BuscaLargura()
         {
