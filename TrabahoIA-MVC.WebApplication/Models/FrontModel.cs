@@ -62,11 +62,14 @@ namespace TrabahoIA_MVC.WebApplication.Models
                 rotasPossiveis.Add(resultado.Split("-"));
             }
 
-            string[] caminhoEntrega = new string[] { };
+            
             string[] aux = GetRouteWithFewestSteps(rotasPossiveis);
-            for (int i = aux.Length; i < 0; i--)
+            string[] caminhoEntrega = new string[aux.Length];
+            int count = 0;
+            for (int i = aux.Length; i > 0; i--)
             {
-                caminhoEntrega.Append(aux[i]);
+                caminhoEntrega[count] = aux[i - 1];
+                count++;
             }
             string[] entregaERetorno = GetCaminhoEntrega(caminhoEntrega.Last());
             string[] caminhoCompleto = CreateWholePath(caminhoEntrega, entregaERetorno);
@@ -103,26 +106,43 @@ namespace TrabahoIA_MVC.WebApplication.Models
             AlgoritmoBuscaLargura x1 = new AlgoritmoBuscaLargura(Grafo, vInicial);
             string resultado = x1.RealizarBusca(vFinal);
 
-            string[] caminhoEntrega = new string[] { };
+            
             string[] aux = resultado.Split("-");
-            for (int i = aux.Length; i < 0; i--)
+            string[] caminhoEntrega = new string[aux.Length*2];
+            int count = 0;
+            for (int i = aux.Length; i > 0; i--)
             {
-                caminhoEntrega.Append(aux[i]);
+                caminhoEntrega[count] = aux[i - 1];
+                count++;
             }
+
+            //count = caminhoEntrega.Length-1;
             foreach (var item in aux)
             {
-                caminhoEntrega.Append(item);
+                caminhoEntrega[count] = item;
+                count++;
             }
             return caminhoEntrega;
         }
 
         private string[] CreateWholePath(string[] caminho, string[] entregaERetorno)
         {
-            string[] caminhoCompleto = caminho;
+            string[] caminhoCompleto = new string[caminho.Length + entregaERetorno.Length];
+            
+            int count = 0;
+            foreach (var item in caminho)
+            {
+                caminhoCompleto[count] = item;
+                count++;
+            }
+
+            //count = caminhoCompleto.Length-1;
             foreach (var item in entregaERetorno)
             {
-                caminhoCompleto.Append(item);
+                caminhoCompleto[count] = item;
+                count++;
             }
+
             return caminhoCompleto;
         }
     }
